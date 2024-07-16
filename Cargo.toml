@@ -1,0 +1,7 @@
+[package]
+name = "data2excel"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rust_xlsxwriter = {version = "0.70.0", features = ["chrono", "zlib"]}
