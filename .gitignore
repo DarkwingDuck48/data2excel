@@ -1,1 +1,11 @@
+# not needed folders with some cache
 /target
+/.idea
+/.jython_cache
+/databases
+/src-jython/.jython_cache
+
+
+*$py.class
+*.xlsx
+*.code-workspace
