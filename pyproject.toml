@@ -1,0 +1,31 @@
+[tool.pylint.MASTER]
+suggestion-mode = 'yes'
+
+[tool.pylint."MESSAGES CONTROL"]
+confidence = ''
+
+disable = '''
+    consider-using-f-string,
+    redundant-u-string-prefix,
+    import-outside-toplevel,
+    missing-module-docstring,
+    missing-function-docstring,
+    missing-class-docstring,
+'''
+
+[tool.pylint.FORMAT]
+indent-string = '    '
+indent-after-paren = 4
+max-line-length = 300
+max-module-lines = 1000
+
+[tool.pylint.BASIC]
+argument-naming-style = 'snake_case'
+attr-naming-style = 'snake_case'
+class-naming-style = 'PascalCase'
+const-naming-style = 'UPPER_CASE'
+function-naming-style = 'snake_case'
+method-naming-style = 'snake_case'
+module-naming-style = 'snake_case'
+variable-naming-style = 'snake_case'
+
