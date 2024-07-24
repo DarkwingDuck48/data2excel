@@ -18,16 +18,14 @@ jobs:
           - os: ubuntu-latest
             artifact_name: data2excel
             asset_name: data2excel-linux-amd64
-            command: apt install musl && apt install musl-dev && cargo build --release --target=x86_64-unknown-linux-musl
           - os: windows-latest
             artifact_name: data2excel.exe
             asset_name: data2excel-windows-amd64.exe
-            command: cargo build --release
 
     steps:
       - uses: actions/checkout@v3
       - name: Build
-        run: ${{ matrix.command }}
+        run: cargo build --release
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
