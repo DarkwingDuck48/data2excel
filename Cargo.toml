@@ -2,7 +2,7 @@
 name = "data2excel"
 version = "0.1.0"
 repository = "https://github.com/DarkwingDuck48/data2excel"
-edition = "2021"
+edition = "2018"
 keywords = ["excel"]
 exclude = ["tests/**/*", "src-jython/**/*"]
 authors = ["Maxim Britvin <maksbritvin@gmail.com>"]
