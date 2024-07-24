@@ -67,7 +67,7 @@ class ReportDataBlock:
         """
         if typeid in (1, -15, -9, 12):
             return '"%s"' % value
-        return value
+        return '"%s"' % value
 
     def _format_resultset_to_json(self, rs):
         """Метод для формирования данных в виде таблицы в Excel файле.

@@ -19,9 +19,10 @@ struct Cli {
 }
 
 fn main() -> Result<(), XlsxError> {
-    let cli = Cli::parse();
+    // let cli = Cli::parse();
 
-    let res = fs::read_to_string(cli.json_path);
+    // let res = fs::read_to_string(cli.json_path);
+    let res = fs::read_to_string("D:\\Work\\GIT_work\\data2excel\\src-jython\\data_json.json");
     
     let json_file = match res {
         Ok(s) => s,
@@ -63,17 +64,24 @@ fn main() -> Result<(), XlsxError> {
                 });
                 current_row += 1;
             };
+
             // Second step - write table from data block to sheet
+            // 
             if let Some(tb) = data_block.table {
+                let row_for_table_autofilter = current_row;
+                let table_columns_count = tb.headers.len() - 1;
                 worksheet.write_row_with_format(current_row, 0, tb.headers, &header_format).expect("Can't write table header");
                 current_row += 1;
                 for row in tb.data{
                     worksheet.write_row(current_row, 0, row).expect("Can't write table data");
                     current_row += 1;
                 }
+                println!("AutoFilter row start: {:?}", row_for_table_autofilter);
+                println!("AutoFilter row end: {:?}", current_row);
+                println!("AutoFilter column end: {:?}", table_columns_count);
+                worksheet.autofilter(row_for_table_autofilter, 0, current_row-1, table_columns_count as u16).expect("Cant set autofilter on sheet");
             }
         }
-
         worksheet.autofit();
     }
     workbook.save(report_path).expect("Can't save workbook");
