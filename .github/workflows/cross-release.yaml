@@ -16,14 +16,6 @@ jobs:
     strategy:
       matrix:
         platform:
-          - os_name: FreeBSD-x86_64
-            os: ubuntu-20.04
-            target: x86_64-unknown-freebsd
-            bin: data2excel
-            name: data2excel-FreeBSD-x86_64.tar.gz
-            cross: true
-            cargo_command: ./cross
-
           - os_name: Linux-x86_64
             os: ubuntu-20.04
             target: x86_64-unknown-linux-musl
