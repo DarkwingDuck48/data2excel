@@ -1,5 +1,8 @@
 mod reportstruct;
 
+#[cfg(test)]
+mod tests;
+
 use std::fs;
 use std::path::PathBuf;
 
@@ -19,11 +22,10 @@ struct Cli {
 }
 
 fn main() -> Result<(), XlsxError> {
-    // let cli = Cli::parse();
+    let cli = Cli::parse();
 
-    // let res = fs::read_to_string(cli.json_path);
-    let res = fs::read_to_string("D:\\Work\\GIT_work\\data2excel\\src-jython\\data_json.json");
-    
+    let res = fs::read_to_string(cli.json_path);
+
     let json_file = match res {
         Ok(s) => s,
         Err(_) => panic!("Cant read file"),
@@ -49,7 +51,9 @@ fn main() -> Result<(), XlsxError> {
 
         for data_block in sheet.data_blocks {
             // Write block name to sheet
-            worksheet.write_with_format(current_row, 0, data_block.name, &Format::new().set_bold()).expect("Can't write datablock name");
+            worksheet
+                .write_with_format(current_row, 0, data_block.name, &Format::new().set_bold())
+                .expect("Can't write datablock name");
             current_row += 2;
             // First step - write simple rows from data block to sheet
             if let Some(sr) = data_block.simple_rows {
@@ -57,29 +61,54 @@ fn main() -> Result<(), XlsxError> {
                     worksheet
                         .write_with_format(current_row, 0, row.header, &header_format)
                         .expect("Can't write header");
-                    worksheet
-                        .write_row(current_row, 1, row.data)
-                        .expect("Can't write row");
+                    let mut col = 1;
+                    for val in row.data {
+                        let is_number = val.replace(',', ".").parse::<f64>();
+                        if let Ok(value) = is_number{
+                            println!("Find numeric value {:?}", &value);
+                            worksheet.write(current_row, col, value).expect("Can't write number to column");
+                        } else{
+                            println!("Find string value {:?}", val);
+                            worksheet.write(current_row, col, val).expect("Can't write string to column");
+                        }
+                        col += 1;
+                    }
                     current_row += 1;
                 });
                 current_row += 1;
             };
 
             // Second step - write table from data block to sheet
-            // 
             if let Some(tb) = data_block.table {
                 let row_for_table_autofilter = current_row;
                 let table_columns_count = tb.headers.len() - 1;
-                worksheet.write_row_with_format(current_row, 0, tb.headers, &header_format).expect("Can't write table header");
+                worksheet
+                    .write_row_with_format(current_row, 0, tb.headers, &header_format)
+                    .expect("Can't write table header");
                 current_row += 1;
-                for row in tb.data{
-                    worksheet.write_row(current_row, 0, row).expect("Can't write table data");
+                for row in tb.data {
+                    for (col,val) in row.into_iter().enumerate() {
+                        let is_number = val.replace(',', ".").parse::<f64>();
+                        if let Ok(value) = is_number{
+                            println!("Find numeric value {:?}", &value);
+                            worksheet.write(current_row, col.try_into().unwrap(), value).expect("Can't write number to column");
+                        } else{
+                            println!("Find string value {:?}", val);
+                            worksheet.write(current_row, col.try_into().unwrap(), val).expect("Can't write string to column");
+                        }
+                    }
                     current_row += 1;
                 }
-                println!("AutoFilter row start: {:?}", row_for_table_autofilter);
-                println!("AutoFilter row end: {:?}", current_row);
-                println!("AutoFilter column end: {:?}", table_columns_count);
-                worksheet.autofilter(row_for_table_autofilter, 0, current_row-1, table_columns_count as u16).expect("Cant set autofilter on sheet");
+                
+                // Autofilter will be applied only for last block
+                worksheet
+                    .autofilter(
+                        row_for_table_autofilter,
+                        0,
+                        current_row - 1,
+                        table_columns_count as u16,
+                    )
+                    .expect("Cant set autofilter on sheet");
             }
         }
         worksheet.autofit();
