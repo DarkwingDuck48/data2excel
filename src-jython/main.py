@@ -109,28 +109,34 @@ class ReportDataBlock:
 def create_report(db_connection):
     """ Создаем отчет со всеми настройками. Предполагается, что в данной функции будем настраивать весь отчет и получаем формируем из него файл"""
     # base report settings
-    WORKBOOK_NAME = u"report.xlsx"
-    REPORT_PATH = os.path.normpath(os.path.join(os.getcwd(), WORKBOOK_NAME)).replace("\\", "\\\\")
+    workbook_name = u"report.xlsx"
+    report_path = os.path.normpath(os.path.join(os.getcwd(), workbook_name)).replace("\\", "\\\\")
 
-    print("REPORT PATH : %s" % REPORT_PATH)
+    print("REPORT PATH : %s" % report_path)
 
     root_json = u'''
         { 
             "workbook" : { 
                 "path" : "%s",
                 "sheets" : [
-    ''' % REPORT_PATH
+    ''' % report_path
 
     sql = "SELECT id as PK, name as PersonName, age as PersonAge from peoples"
+    sql2 = "SELECT name as PersonName, age as PersonAge from peoples"
     report_block = ReportDataBlock (
         name="TestReport",
         simple_rows=[["test", 1, 2,3], ["new", 1, 3, 4]],
         sql_statement=sql)
 
+    report_block_2 = ReportDataBlock (
+        name="Bew block",
+        simple_rows=[["test", 1, 2,3], ["new", 1, 3, 4]],
+        sql_statement=sql2)
+
     report_block_info = ReportDataBlock(
         name="Load Info",
         simple_rows=[
-            ["LOAID", 20304, 1231234],
+            ["LOAID", "20304,23", 1231234],
             ["USERNAME", "MAXIM"]
         ]
     )
@@ -139,7 +145,8 @@ def create_report(db_connection):
         name="ALL_DATA",
         data_blocks=[
             report_block_info.parse_block_to_jsonlike_string(db_connection),
-            report_block.parse_block_to_jsonlike_string(db_connection)
+            report_block.parse_block_to_jsonlike_string(db_connection),
+            report_block_2.parse_block_to_jsonlike_string(db_connection)
         ]
     )
 

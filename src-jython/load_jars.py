@@ -8,7 +8,6 @@ def loadJar(jarFile):
     u = io.File(jarFile).toURL() if type(jarFile) != net.URL else jarFile
     m = net.URLClassLoader.getDeclaredMethod('addURL', [net.URL])
     m.accessible = 1
-    print("%s" % lang.ClassLoader.getSystemClassLoader())
     m.invoke(lang.ClassLoader.getSystemClassLoader(), [u])
 
 def loadsqldrivers():

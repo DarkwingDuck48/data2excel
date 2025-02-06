@@ -1,8 +1,5 @@
 mod reportstruct;
 
-#[cfg(test)]
-mod tests;
-
 use std::fs;
 use std::path::PathBuf;
 
@@ -16,6 +13,7 @@ use serde_json::from_str;
 use reportstruct::Report;
 
 #[derive(Parser)]
+#[command(version)]
 struct Cli {
     #[arg(long)]
     json_path: PathBuf,

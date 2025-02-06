@@ -1,1 +1,12 @@
-{ "data": [{"id" : "1","name" : "Maxim","age" : "30"},{"id" : "2","name" : "Ivan","age" : "18"},{"id" : "3","name" : "Stephan","age" : "57"}]}
+
+        { 
+            "workbook" : { 
+                "path" : "D:\\Work\\GIT_work\\data2excel\\report.xlsx",
+                "sheets" : [
+    { "name": "ALL_DATA", "data_blocks": [ {"name": "Load Info","simple_rows": [{"header": "LOAID", 
+"data": ["20304,23","1231234"]},{"header": "USERNAME", 
+"data": ["MAXIM"]}]},{"name": "TestReport","simple_rows": [{"header": "test", 
+"data": ["1","2","3"]},{"header": "new", 
+"data": ["1","3","4"]}],"table": {"headers" : ["PK","PersonName","PersonAge"],"data" : [["1","Maxim","30"],["2","Ivan","18"],["3","Stephan","57"]]}},{"name": "Bew block","simple_rows": [{"header": "test", 
+"data": ["1","2","3"]},{"header": "new", 
+"data": ["1","3","4"]}],"table": {"headers" : ["PersonName","PersonAge"],"data" : [["Maxim","30"],["Ivan","18"],["Stephan","57"]]}}]}]}}
