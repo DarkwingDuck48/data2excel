@@ -63,10 +63,8 @@ fn main() -> Result<(), XlsxError> {
                     for val in row.data {
                         let is_number = val.replace(',', ".").parse::<f64>();
                         if let Ok(value) = is_number{
-                            println!("Find numeric value {:?}", &value);
                             worksheet.write(current_row, col, value).expect("Can't write number to column");
                         } else{
-                            println!("Find string value {:?}", val);
                             worksheet.write(current_row, col, val).expect("Can't write string to column");
                         }
                         col += 1;
@@ -88,10 +86,8 @@ fn main() -> Result<(), XlsxError> {
                     for (col,val) in row.into_iter().enumerate() {
                         let is_number = val.replace(',', ".").parse::<f64>();
                         if let Ok(value) = is_number{
-                            println!("Find numeric value {:?}", &value);
                             worksheet.write(current_row, col.try_into().unwrap(), value).expect("Can't write number to column");
                         } else{
-                            println!("Find string value {:?}", val);
                             worksheet.write(current_row, col.try_into().unwrap(), val).expect("Can't write string to column");
                         }
                     }
